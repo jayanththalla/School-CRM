@@ -21,17 +21,17 @@ const Home = () => {
         <p className="text-lg text-gray-700 dark:text-gray-300 mt-2">Your gateway to a streamlined school experience.</p>
       </div>
 
-      <div className="mt-8 space-y-4">
+      <div className="mt-8">
         <Link to="/login">
-          <button className="px-6 py-3 mr-5 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 font-medium">
-            Login
+          <button className="px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 font-medium text-lg">
+            Login to Dashboard
           </button>
         </Link>
-        <Link to="/signup">
-          <button className="px-6 py-3 bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 font-medium">
-            Signup
-          </button>
-        </Link>
+        <div className="mt-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md max-w-md mx-auto">
+          <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+            Use demo credentials to explore the platform
+          </p>
+        </div>
       </div>
     </div>
   );

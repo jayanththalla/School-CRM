@@ -1,8 +1,7 @@
-// App.jsx or App.tsx
-
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import ClassDiary from './components/ClassDiary';
@@ -16,19 +15,20 @@ import Notifications from './components/Notifications';
 import Timetable from './components/Timetable';
 import Fee from './components/Fee';
 import Chatbot from './components/Chatbot';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
+import DemoLogin from './pages/DemoLogin';
 import Home from './pages/Home';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const Layout = () => {
   const location = useLocation();
+  const { user } = useAuth();
 
-  const studentName = "John Doe";
+  const studentName = user?.students?.[0]?.name || "Student";
   const profilePic = "https://www.w3schools.com/howto/img_avatar.png";
   const schoolName = "My School";
   const schoolLogo = "https://i.pinimg.com/originals/48/a3/54/48a354314bb3517dabc705eb3ee8b968.jpg";
 
-  const hideHeaderPaths = ["/", "/login", "/signup", "/dashboard", "/performance-analytics"];
+  const hideHeaderPaths = ["/", "/login", "/dashboard", "/performance-analytics"];
 
   return (
     <div className="min-h-screen transition-colors duration-300 bg-gray-50 dark:bg-gray-900">
@@ -42,20 +42,69 @@ const Layout = () => {
       )}
 
       <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/class-diary" element={<ClassDiary />} />
-        <Route path="/mock-tests" element={<MockTests />} />
-        <Route path="/assignments" element={<Assignments />} />
-        <Route path="/attendance" element={<Attendance />} />
-        <Route path="/exams-and-marks" element={<ExamsAndMarks />} />
-        <Route path="/performance-analytics" element={<PerformanceAnalytics />} />
-        <Route path="/profile" element={<ProfileDashboard />} />
-        <Route path="/notifications" element={<Notifications />} />
-        <Route path="/timetable" element={<Timetable />} />
-        <Route path="/fee" element={<Fee />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        {/* Public Routes */}
+        <Route path="/login" element={<DemoLogin />} />
         <Route path="/" element={<Home />} />
+
+        {/* Protected Routes */}
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/class-diary" element={
+          <ProtectedRoute>
+            <ClassDiary />
+          </ProtectedRoute>
+        } />
+        <Route path="/mock-tests" element={
+          <ProtectedRoute>
+            <MockTests />
+          </ProtectedRoute>
+        } />
+        <Route path="/assignments" element={
+          <ProtectedRoute>
+            <Assignments />
+          </ProtectedRoute>
+        } />
+        <Route path="/attendance" element={
+          <ProtectedRoute>
+            <Attendance />
+          </ProtectedRoute>
+        } />
+        <Route path="/exams-and-marks" element={
+          <ProtectedRoute>
+            <ExamsAndMarks />
+          </ProtectedRoute>
+        } />
+        <Route path="/performance-analytics" element={
+          <ProtectedRoute>
+            <PerformanceAnalytics />
+          </ProtectedRoute>
+        } />
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <ProfileDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/notifications" element={
+          <ProtectedRoute>
+            <Notifications />
+          </ProtectedRoute>
+        } />
+        <Route path="/timetable" element={
+          <ProtectedRoute>
+            <Timetable />
+          </ProtectedRoute>
+        } />
+        <Route path="/fee" element={
+          <ProtectedRoute>
+            <Fee />
+          </ProtectedRoute>
+        } />
+
+        {/* Catch all - redirect to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
       <Chatbot />
@@ -63,12 +112,14 @@ const Layout = () => {
   );
 };
 
-// AppWrapper: now correctly wraps ThemeProvider and Router
+// AppWrapper: wraps ThemeProvider, AuthProvider, and Router
 const AppWrapper = () => (
   <ThemeProvider>
-    <Router>
-      <Layout />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Layout />
+      </Router>
+    </AuthProvider>
   </ThemeProvider>
 );
 
