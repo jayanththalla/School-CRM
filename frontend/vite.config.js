@@ -12,8 +12,18 @@ export default defineConfig({
     port: 5000,
     host: '0.0.0.0',
     strictPort: true,
+    allowedHosts: true,
     hmr: {
-      clientPort: 5000
+      protocol: 'wss',
+      host: process.env.REPLIT_DEV_DOMAIN || 'localhost',
+      clientPort: 443
+    },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false
+      }
     }
   }
 })
