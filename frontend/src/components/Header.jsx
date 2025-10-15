@@ -10,33 +10,41 @@ const Header = ({ studentName, profilePic, schoolName, schoolLogo }) => {
   };
 
   return (
-    <header className="flex justify-between items-center p-1 bg-blue-600 dark:bg-blue-800 transition-colors duration-300 shadow-lg">
-      <div className="flex flex-col items-center">
+    <header className="flex justify-between items-center p-4 bg-blue-600 dark:bg-blue-900 transition-colors duration-300 shadow-lg">
+      <div className="flex items-center space-x-3">
         <img
           src={schoolLogo}
           alt="School Logo"
-          className="w-8 h-8 rounded-full mt-2"
+          className="w-10 h-10 rounded-full"
         />
-        <span className="text-lg font-semibold text-white">{schoolName}</span>
+        <span className="text-xl font-bold text-white">{schoolName}</span>
       </div>
-      
+
       {/* Profile Section with Theme Toggle */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-6">
         {/* Theme Toggle Button */}
         <div className="flex flex-col items-center">
           <ThemeToggle />
-          <span className="text-xs text-white/80 mt-1">Theme</span>
+          <span className="text-xs text-white/80 mt-1 hidden sm:block">Theme</span>
         </div>
-        
+
         {/* Profile Picture and User Name */}
-        <div className="flex flex-col items-center">
+        <div className="flex items-center space-x-3">
+          <div className="flex flex-col items-end">
+            <span className="text-sm font-medium text-white/90 hidden md:block">{studentName}</span>
+            <button
+              onClick={handleProfileClick}
+              className="text-xs text-blue-100 hover:text-white transition-colors"
+            >
+              View Profile
+            </button>
+          </div>
           <img
             src={profilePic}
             alt="Profile"
-            className="w-8 h-8 rounded-full mt-2 cursor-pointer hover:ring-2 hover:ring-white/50 transition-all duration-200"
+            className="w-10 h-10 rounded-full cursor-pointer hover:ring-2 hover:ring-white/50 transition-all duration-200"
             onClick={handleProfileClick}
           />
-          <span className="text-lg font-semibold text-white">{studentName}</span>
         </div>
       </div>
     </header>

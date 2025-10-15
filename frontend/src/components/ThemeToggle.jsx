@@ -1,32 +1,30 @@
 import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
-import "../styles/tailwind.css"
-
 
 const ThemeToggle = () => {
   const { isDarkMode, toggleTheme } = useTheme();
-  console.log(isDarkMode);
+
   return (
-    <>
     <button
       onClick={toggleTheme}
-      className="relative inline-flex h-8 w-14 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+      className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
       style={{
-        backgroundColor: isDarkMode ? '#374151' : '#e5e7eb',
+        backgroundColor: isDarkMode ? '#4B5563' : '#D1D5DB',
       }}
       aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
+      title={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
     >
       <span
-        className={`inline-block h-6 w-6 transform rounded-full bg-white shadow-lg transition-transform duration-300 ${
-          isDarkMode ? 'translate-x-7' : 'translate-x-1'
-        }`}
+        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-300 ${isDarkMode ? 'translate-x-6' : 'translate-x-1'
+          }`}
       >
         {/* Sun icon for light mode */}
         {!isDarkMode && (
           <svg
-            className="h-4 w-4 text-yellow-500 mx-auto mt-1"
+            className="h-3 w-3 text-yellow-500"
             fill="currentColor"
             viewBox="0 0 20 20"
+            aria-hidden="true"
           >
             <path
               fillRule="evenodd"
@@ -38,17 +36,17 @@ const ThemeToggle = () => {
         {/* Moon icon for dark mode */}
         {isDarkMode && (
           <svg
-            className="h-4 w-4 text-gray-700 mx-auto mt-1"
+            className="h-3 w-3 text-gray-700"
             fill="currentColor"
             viewBox="0 0 20 20"
+            aria-hidden="true"
           >
             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
           </svg>
         )}
       </span>
     </button>
-    </>
   );
 };
 
-export default ThemeToggle; 
+export default ThemeToggle;

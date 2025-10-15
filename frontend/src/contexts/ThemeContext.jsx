@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import "../styles/tailwind.css"
 
 const ThemeContext = createContext();
 
@@ -12,43 +11,62 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Check localStorage for saved preference
-    const saved = localStorage.getItem('theme');
-    if (saved) {
-      return saved === 'dark';
-    }
-    // Check system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+  // In ThemeContext.jsx
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
+  // 🟢 On first load: apply saved or system theme
   useEffect(() => {
-    // Update localStorage when theme changes
-    // console.log("Dark mode changed:", isDarkMode);
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-    
-    // Update document class for Tailwind dark mode
-    if (isDarkMode) {
+    if (typeof window === 'undefined') return;
+
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const darkModeEnabled = savedTheme ? savedTheme === 'dark' : prefersDark;
+
+    // Force update the state and class
+    setIsDarkMode(darkModeEnabled);
+    if (darkModeEnabled) {
       document.documentElement.classList.add('dark');
-      // console.log("Dark mode enabled");
     } else {
       document.documentElement.classList.remove('dark');
-      // console.log("Dark mode disabled");
     }
+  }, []);
+
+  // 🟢 Whenever theme changes: update DOM + localStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
-  const toggleTheme = () => {
-    setIsDarkMode(prev => !prev);
-  };
+  // 🟢 Watch system theme changes only if user hasn’t set a preference
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
 
-  const value = {
-    isDarkMode,
-    toggleTheme,
-  };
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = e => {
+      const savedTheme = localStorage.getItem('theme');
+      if (!savedTheme) {
+        setIsDarkMode(e.matches);
+      }
+    };
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  // 🟢 Toggle manually
+  const toggleTheme = () => setIsDarkMode(prev => !prev);
+
+  // 🟢 Set directly ('dark' | 'light')
+  const setTheme = theme => setIsDarkMode(theme === 'dark');
 
   return (
-    <ThemeContext.Provider value={value}>
+    <ThemeContext.Provider value={{ isDarkMode, toggleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   );
-}; 
+};
