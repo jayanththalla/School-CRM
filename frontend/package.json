@@ -12,6 +12,7 @@
   "dependencies": {
     "@heroicons/react": "^1.0.6",
     "@react-oauth/google": "^0.12.2",
+    "@supabase/supabase-js": "^2.76.1",
     "axios": "^1.12.2",
     "chart.js": "^4.5.1",
     "framer-motion": "^12.23.24",
