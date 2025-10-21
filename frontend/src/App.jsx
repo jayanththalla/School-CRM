@@ -27,11 +27,11 @@ const App = () => {
   return (
     <>
       {!hideHeaderPaths.includes(location.pathname) && (
-        <Header 
-          studentName={studentName} 
-          profilePic={profilePic} 
-          schoolName={schoolName} 
-          schoolLogo={schoolLogo} 
+        <Header
+          studentName={studentName}
+          profilePic={profilePic}
+          schoolName={schoolName}
+          schoolLogo={schoolLogo}
         />
       )}
       <Routes>
